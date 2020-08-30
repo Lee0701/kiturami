@@ -3,6 +3,10 @@ package io.github.lee0701.kiturami;
 import static org.junit.Assert.*;
 
 import io.github.lee0701.kiturami.converter.Normalize;
+import io.github.lee0701.kiturami.converter.ReplaceChar;
+import io.github.lee0701.kiturami.converter.Sequential;
+import io.github.lee0701.kiturami.converter.hangul.Combination;
+import io.github.lee0701.kiturami.converter.hangul.Han2;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -47,13 +51,13 @@ public class ConverterTest {
 
             put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
         }};
-        Converter<String, String> converter = new Sequential(new Sequential(new Sequential(
+        Converter<String, String> converter = new Sequential<>(new Sequential<>(new Sequential<>(
                 new ReplaceChar(layout),
                 new Han2()),
                 new Combination(combinations)),
                 new Normalize("NFC")
         );
-        assertEquals("영한", "dudgks");
-        assertEquals("둡벐식", "enqqjfttlr");
+        assertEquals("영한", converter.convert("dudgks"));
+        assertEquals("둡벐식", converter.convert("enqqjfttlr"));
     }
 }
