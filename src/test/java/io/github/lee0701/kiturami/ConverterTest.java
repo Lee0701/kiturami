@@ -17,9 +17,6 @@ import java.util.Map;
 public class ConverterTest {
 
     private static final String LAYOUT_ALPHABET_QWERTY = " `~1!2@3#4$5%6^7&8*9(0)-_=+\\\\|qQwWeErRtTyYuUiIoOpP[{]}aAsSdDfFgGhHjJkKlL;:'\"zZxXcCvVbBnNmM,<.>/?";
-    private static final String LAYOUT_ALPHABET_DVORAK = " `~1!2@3#4$5%6^7&8*9(0)[{]}\\\\|'\",<.>pPyYfFgGcCrRlL/?=+aAoOeEuUiIdDhHtTnNsS\\-_;:qQjJkKxXbBmMwWvVzZ";
-    private static final String LAYOUT_ALPHABET_COLEMAK = " `~1!2@3#4$5%6^7&8*9(0)-_=+\\\\|qQwWfFpPgGjJlLuUyY;:[{]}aArRsStTdDhHnNeEiIoO'\"zZxXcCvVbBkKmM,<.>/?";
-
     private static final String LAYOUT_DUBEOL_STANDARD = " `~1!2@3#4$5%6^7&8*9(0)-_=+\\\\|ㅂㅃㅈㅉㄷㄸㄱㄲㅅㅆㅛㅛㅕㅕㅑㅑㅐㅒㅔㅖ[{]}ㅁㅁㄴㄴㅇㅇㄹㄹㅎㅎㅗㅗㅓㅓㅏㅏㅣㅣ;:'\"ㅋㅋㅌㅌㅊㅊㅍㅍㅠㅠㅜㅜㅡㅡ,<.>/?";
     private static final String LAYOUT_SEBEOL_FINAL = " *※ᇂᆩᆻᆰᆸᆽᅭᆵᅲᆴᅣ=ᅨ“ᅴ”ᅮ'ᄏ~);>+:\\\\ᆺᇁᆯᇀᅧᆬᅢᆶᅥᆳᄅ5ᄃ6ᄆ7ᄎ8ᄑ9(%</ᆼᆮᆫᆭᅵᆲᅡᆱᅳᅤᄂ0ᄋ1ᄀ2ᄌ3ᄇ4ᄐ·ᆷᆾᆨᆹᅦᆿᅩᆪᅮ?ᄉ-ᄒ\",,..ᅩ!";
 
@@ -74,7 +71,7 @@ public class ConverterTest {
     }
 
     @Test
-    public void testSebeolFinal() {
+    public void testMfsjea() {
         Map<Character, Character> layout = generateLayout(LAYOUT_ALPHABET_QWERTY, LAYOUT_SEBEOL_FINAL);
         Map<String, Character> combinations = new HashMap<>() {{
             put("ᄀᄀ", 'ᄁ'); put("ᄃᄃ", 'ᄄ'); put("ᄇᄇ", 'ᄈ'); put("ᄉᄉ", 'ᄊ'); put("ᄌᄌ", 'ᄍ');
@@ -86,47 +83,6 @@ public class ConverterTest {
                 .then(new Normalize("NFC"));
         assertEquals("세벌식 영한", converter.convert("nc;twndx jeamfs"));
         assertEquals("쀍쒙퇋", converter.convert(";;9c@nn9tW'/fR"));
-    }
-
-    private Map<String, String> jeamfsAuto(String input) {
-        Map<String, String> sourceLayouts = new HashMap<>() {{
-            put("Qwerty", LAYOUT_ALPHABET_QWERTY);
-            put("Dvorak", LAYOUT_ALPHABET_DVORAK);
-            put("Colemak", LAYOUT_ALPHABET_COLEMAK);
-        }};
-        Map<String, String> destinationLayouts = new HashMap<>() {{
-            put("두벌식 표준", LAYOUT_DUBEOL_STANDARD);
-            put("세벌식 최종", LAYOUT_SEBEOL_FINAL);
-        }};
-        Map<String, Map<String,Character>> destinationCombinations = new HashMap<>() {{
-            put("두벌식 표준", new HashMap<>() {{
-                put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅥ", 'ᅯ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
-                put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
-            }});
-            put("세벌식 최종", new HashMap<>() {{
-                put("ᄀᄀ", 'ᄁ'); put("ᄃᄃ", 'ᄄ'); put("ᄇᄇ", 'ᄈ'); put("ᄉᄉ", 'ᄊ'); put("ᄌᄌ", 'ᄍ');
-                put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅥ", 'ᅯ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
-                put("ᆨᆨ", 'ᆩ'); put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ'); put("ᆺᆺ", 'ᆻ');
-            }});
-        }};
-        Map<String, String> result = new HashMap<>();
-        for(String source : sourceLayouts.keySet()) {
-            for(String destination : destinationLayouts.keySet()) {
-                Map<Character, Character> layout = generateLayout(sourceLayouts.get(source), destinationLayouts.get(destination));
-                Converter<String, String> converter = new ReplaceChar(layout);
-                if(destination.startsWith("두벌식")) converter = converter.then(new Han2());
-                converter = converter.then(new Combination(destinationCombinations.get(destination)));
-                converter = converter.then(new Normalize("NFC"));
-                result.put(source + '-' + destination, converter.convert(input));
-            }
-        }
-        return result;
-    }
-
-    @Test
-    public void testJeamfsAuto() {
-        assertTrue(jeamfsAuto("lfuva jeamfs 'cng'gjd3hduf.").containsValue("자동 영한 테스트입니다."));
-        assertTrue(jeamfsAuto("0vwupxndjv kcogwksx").containsValue("콜맥으로 세벌식"));
     }
 
     @Test
