@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group 'io.github.lee0701'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
