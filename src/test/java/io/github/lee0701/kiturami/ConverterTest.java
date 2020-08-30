@@ -15,6 +15,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConverterTest {
+
+    private static final String LAYOUT_ALPHABET_QWERTY = " `~1!2@3#4$5%6^7&8*9(0)-_=+\\\\|qQwWeErRtTyYuUiIoOpP[{]}aAsSdDfFgGhHjJkKlL;:'\"zZxXcCvVbBnNmM,<.>/?";
+    private static final String LAYOUT_DUBEOL_STANDARD = " `~1!2@3#4$5%6^7&8*9(0)-_=+\\\\|ㅂㅃㅈㅉㄷㄸㄱㄲㅅㅆㅛㅛㅕㅕㅑㅑㅐㅒㅔㅖ[{]}ㅁㅁㄴㄴㅇㅇㄹㄹㅎㅎㅗㅗㅓㅓㅏㅏㅣㅣ;:'\"ㅋㅋㅌㅌㅊㅊㅍㅍㅠㅠㅜㅜㅡㅡ,<.>/?";
+    private static final String LAYOUT_SEBEOL_FINAL = " *※ᇂᆩᆻᆰᆸᆽᅭᆵᅲᆴᅣ=ᅨ“ᅴ”ᅮ'ᄏ~);>+:\\\\ᆺᇁᆯᇀᅧᆬᅢᆶᅥᆳᄅ5ᄃ6ᄆ7ᄎ8ᄑ9(%</ᆼᆮᆫᆭᅵᆲᅡᆱᅳᅤᄂ0ᄋ1ᄀ2ᄌ3ᄇ4ᄐ·ᆷᆾᆨᆹᅦᆿᅩᆪᅮ?ᄉ-ᄒ\",,..ᅩ!";
+
+    private Map<Character, Character> generateLayout(String source, String destination) {
+        Map<Character, Character> result = new HashMap<>();
+        for(int i = 0 ; i < Math.min(source.length(), destination.length()) ; i++) {
+            result.put(source.charAt(i), destination.charAt(i));
+        }
+        return result;
+    }
+
     @Test
     public void testNormalize() {
         Converter<String, String> converter = new Normalize("NFC");
@@ -42,14 +55,9 @@ public class ConverterTest {
 
     @Test
     public void testDudgks() {
-        Map<Character, Character> layout = new HashMap<>() {{
-            put('Q', 'ㅃ'); put('W', 'ㅉ'); put('E', 'ㄸ'); put('R', 'ㄲ'); put('T', 'ㅆ'); put('O', 'ㅒ'); put('P', 'ㅖ');
-            put('q', 'ㅂ'); put('w', 'ㅈ'); put('e', 'ㄷ'); put('r', 'ㄱ'); put('t', 'ㅅ'); put('y', 'ㅛ'); put('u', 'ㅕ'); put('i', 'ㅑ'); put('o', 'ㅐ'); put('p', 'ㅔ');
-            put('a', 'ㅁ'); put('s', 'ㄴ'); put('d', 'ㅇ'); put('f', 'ㄹ'); put('g', 'ㅎ'); put('h', 'ㅗ'); put('j', 'ㅓ'); put('k', 'ㅏ'); put('l', 'ㅣ');
-            put('z', 'ㅋ'); put('x', 'ㅌ'); put('c', 'ㅊ'); put('v', 'ㅍ'); put('b', 'ㅠ'); put('n', 'ㅜ'); put('m', 'ㅡ');
-        }};
+        Map<Character, Character> layout = generateLayout(LAYOUT_ALPHABET_QWERTY, LAYOUT_DUBEOL_STANDARD);
         Map<String, Character> combinations = new HashMap<>() {{
-            put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
+            put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅥ", 'ᅯ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
             put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
         }};
         Converter<String, String> converter = new Sequential<>(new Sequential<>(new Sequential<>(
@@ -60,6 +68,21 @@ public class ConverterTest {
         );
         assertEquals("영한", converter.convert("dudgks"));
         assertEquals("둡벐식", converter.convert("enqqjfttlr"));
+    }
+
+    @Test
+    public void testSebeolFinal() {
+        Map<Character, Character> layout = generateLayout(LAYOUT_ALPHABET_QWERTY, LAYOUT_SEBEOL_FINAL);
+        Map<String, Character> combinations = new HashMap<>() {{
+            put("ᄀᄀ", 'ᄁ'); put("ᄃᄃ", 'ᄄ'); put("ᄇᄇ", 'ᄈ'); put("ᄉᄉ", 'ᄊ'); put("ᄌᄌ", 'ᄍ');
+            put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅥ", 'ᅯ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
+            put("ᆨᆨ", 'ᆩ'); put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ'); put("ᆺᆺ", 'ᆻ');
+        }};
+        Converter<String, String> converter = new ReplaceChar(layout)
+                .then(new Combination(combinations))
+                .then(new Normalize("NFC"));
+        assertEquals("세벌식 영한", converter.convert("nc;twndx jeamfs"));
+        assertEquals("쀍쒙퇋", converter.convert(";;9c@nn9tW'/fR"));
     }
 
     @Test
@@ -100,14 +123,14 @@ public class ConverterTest {
             put("ㅜ*", 'ㅠ');
         }};
         Map<String, Character> combinations = new HashMap<>() {{
-            put("ᅡᅵ", 'ᅢ'); put("ᅣᅵ", 'ᅤ'); put("ᅥᅵ", 'ᅦ'); put("ᅧᅵ", 'ᅨ'); put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
+            put("ᅡᅵ", 'ᅢ'); put("ᅣᅵ", 'ᅤ'); put("ᅥᅵ", 'ᅦ'); put("ᅧᅵ", 'ᅨ'); put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅥ", 'ᅯ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
             put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
         }};
         Converter<String, String> converter = new MultiTap(layout)
-                .thenSequential(new Combination(additions))
-                .thenSequential(new Han2())
-                .thenSequential(new Combination(combinations))
-                .thenSequential(new Normalize("NFC"));
+                .then(new Combination(additions))
+                .then(new Han2())
+                .then(new Combination(combinations))
+                .then(new Normalize("NFC"));
         assertEquals("나랏글", converter.convert("23437104"));
         assertEquals("변환기", converter.convert("5*33*28*63219"));
         assertEquals("얘야 밥 먹었니", converter.convert("83*983* 5*35* 53318337#29"));
