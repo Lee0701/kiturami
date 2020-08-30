@@ -3,11 +3,8 @@ package io.github.lee0701.kiturami;
 import static org.junit.Assert.*;
 
 import io.github.lee0701.kiturami.converter.Converter;
-import io.github.lee0701.kiturami.converter.string.MultiTap;
-import io.github.lee0701.kiturami.converter.string.Normalize;
-import io.github.lee0701.kiturami.converter.string.ReplaceChar;
+import io.github.lee0701.kiturami.converter.string.*;
 import io.github.lee0701.kiturami.converter.Sequential;
-import io.github.lee0701.kiturami.converter.hangul.Combination;
 import io.github.lee0701.kiturami.converter.hangul.Han2;
 import org.junit.Test;
 
@@ -36,15 +33,25 @@ public class ConverterTest {
     }
 
     @Test
-    public void testCombination() {
+    public void testCombine() {
         Map<String, Character> table = new HashMap<>() {{
             put("ᆸᆺ", 'ᆹ');
             put("ᆯᆨ", 'ᆰ');
             put("ᆰᆺ", 'ᇌ');
         }};
-        Converter<String, String> converter = new Combination(table);
+        Converter<String, String> converter = new Combine(table);
         assertEquals("없다", converter.convert("업ᆺ다"));
         assertEquals("아ᇌ", converter.convert("알ᆨᆺ"));
+    }
+
+    @Test
+    public void testExpand() {
+        Map<Character, String> table = new HashMap<>() {{
+            put('A', "asdf");
+            put('S', "success");
+        }};
+        Converter<String, String> converter = new Expand(table);
+        assertEquals("This is a successful asdf", converter.convert("This is a Sful A"));
     }
 
     @Test
@@ -63,7 +70,7 @@ public class ConverterTest {
         Converter<String, String> converter = new Sequential<>(new Sequential<>(new Sequential<>(
                 new ReplaceChar(layout),
                 new Han2()),
-                new Combination(combinations)),
+                new Combine(combinations)),
                 new Normalize("NFC")
         );
         assertEquals("영한", converter.convert("dudgks"));
@@ -79,7 +86,7 @@ public class ConverterTest {
             put("ᆨᆨ", 'ᆩ'); put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ'); put("ᆺᆺ", 'ᆻ');
         }};
         Converter<String, String> converter = new ReplaceChar(layout)
-                .then(new Combination(combinations))
+                .then(new Combine(combinations))
                 .then(new Normalize("NFC"));
         assertEquals("세벌식 영한", converter.convert("nc;twndx jeamfs"));
         assertEquals("쀍쒙퇋", converter.convert(";;9c@nn9tW'/fR"));
@@ -127,9 +134,9 @@ public class ConverterTest {
             put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
         }};
         Converter<String, String> converter = new MultiTap(layout)
-                .then(new Combination(additions))
+                .then(new Combine(additions))
                 .then(new Han2())
-                .then(new Combination(combinations))
+                .then(new Combine(combinations))
                 .then(new Normalize("NFC"));
         assertEquals("나랏글", converter.convert("23437104"));
         assertEquals("변환기", converter.convert("5*33*28*63219"));

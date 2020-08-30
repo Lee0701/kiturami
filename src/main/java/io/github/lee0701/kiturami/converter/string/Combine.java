@@ -1,13 +1,13 @@
-package io.github.lee0701.kiturami.converter.hangul;
+package io.github.lee0701.kiturami.converter.string;
 
 import io.github.lee0701.kiturami.converter.Converter;
 
 import java.util.Map;
 
-public class Combination implements Converter<String, String> {
+public class Combine implements Converter<String, String> {
     private final Map<String, Character> table;
 
-    public Combination(Map<String, Character> table) {
+    public Combine(Map<String, Character> table) {
         this.table = table;
     }
 
