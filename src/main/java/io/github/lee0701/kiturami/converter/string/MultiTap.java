@@ -22,6 +22,7 @@ public class MultiTap implements Converter<String, String> {
             if(table.containsKey(c)) {
                 String output = table.get(c);
                 if(last != c) index = 0;
+                else result.deleteCharAt(result.length() - 1);
                 result.append(output.charAt(index));
                 if(++index >= output.length()) index = 0;
             } else result.append(c);

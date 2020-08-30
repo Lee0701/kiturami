@@ -68,21 +68,40 @@ public class ConverterTest {
         Map<Character, String> layout = new HashMap<>() {{
             put('1', "ㄱ");
             put('2', "ㄴ");
-            put('3', "ㅏ', 'ㅓ");
+            put('3', "ㅏㅓ");
             put('4', "ㄹ");
             put('5', "ㅁ");
-            put('6', "ㅗ', 'ㅜ");
+            put('6', "ㅗㅜ");
             put('7', "ㅅ");
             put('8', "ㅇ");
             put('9', "ㅣ");
             put('0', "ㅡ");
         }};
         Map<String, Character> additions = new HashMap<>() {{
+            put("ㄱ*", 'ㅋ');
+            put("ㄴ*", 'ㄷ');
+            put("ㄷ*", 'ㅌ');
             put("ㅁ*", 'ㅂ');
             put("ㅂ*", 'ㅍ');
+            put("ㅅ*", 'ㅈ');
+            put("ㅈ*", 'ㅊ');
+            put("ㅇ*", 'ㅎ');
+
+            put("ㄱ#", 'ㄲ');
+            put("ㄷ#", 'ㄸ');
+            put("ㅂ#", 'ㅃ');
+            put("ㅅ#", 'ㅆ');
+            put("ㅈ#", 'ㅉ');
+
+            put("ㅏ*", 'ㅑ');
+            put("ㅐ*", 'ㅒ');
+            put("ㅓ*", 'ㅕ');
+            put("ㅔ*", 'ㅖ');
+            put("ㅗ*", 'ㅛ');
+            put("ㅜ*", 'ㅠ');
         }};
         Map<String, Character> combinations = new HashMap<>() {{
-            put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
+            put("ᅡᅵ", 'ᅢ'); put("ᅣᅵ", 'ᅤ'); put("ᅥᅵ", 'ᅦ'); put("ᅧᅵ", 'ᅨ'); put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
             put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
         }};
         Converter<String, String> converter = new Sequential<>(new Sequential<>(new Sequential<>(new Sequential<>(
@@ -93,5 +112,7 @@ public class ConverterTest {
                 new Normalize("NFC")
         );
         assertEquals("나랏글", converter.convert("23437104"));
+        assertEquals("변환기", converter.convert("5*33*28*63219"));
+        assertEquals("얘야 밥 먹었니", converter.convert("83*983* 5*35* 53318337#29"));
     }
 }
