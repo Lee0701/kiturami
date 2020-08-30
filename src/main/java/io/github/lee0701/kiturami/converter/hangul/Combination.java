@@ -16,8 +16,11 @@ public class Combination implements Converter<String, String> {
         char[] chars = input.toCharArray();
         StringBuilder result = new StringBuilder();
         for(int i = 0 ; i < chars.length ; i++) {
-            if(i == 0) continue;
             char c = chars[i];
+            if(i == 0) {
+                result.append(c);
+                continue;
+            }
             char last = result.charAt(result.length() - 1);
             String key = new String(new char[] {last, c});
             if(table.containsKey(key)) {
@@ -25,6 +28,6 @@ public class Combination implements Converter<String, String> {
                 result.append(table.get(key));
             } else result.append(c);
         }
-        return null;
+        return result.toString();
     }
 }

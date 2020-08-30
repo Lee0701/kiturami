@@ -1,4 +1,4 @@
-package io.github.lee0701.kiturami.converter;
+package io.github.lee0701.kiturami.converter.string;
 
 import io.github.lee0701.kiturami.Converter;
 
