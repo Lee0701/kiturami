@@ -3,6 +3,7 @@ package io.github.lee0701.kiturami;
 import static org.junit.Assert.*;
 
 import io.github.lee0701.kiturami.converter.Converter;
+import io.github.lee0701.kiturami.converter.hangul.JamosToCompatibility;
 import io.github.lee0701.kiturami.converter.string.*;
 import io.github.lee0701.kiturami.converter.Sequential;
 import io.github.lee0701.kiturami.converter.hangul.Han2;
@@ -58,6 +59,12 @@ public class ConverterTest {
     public void testHan2() {
         Converter<String, String> converter = new Han2();
         assertEquals("변환", converter.convert("ㅂㅕㄴㅎㅘㄴ"));
+    }
+
+    @Test
+    public void testJamosToCompatibility() {
+        Converter<String, String> converter = new JamosToCompatibility();
+        assertEquals("ㅂㅕㄴㅎㅘㄴ", converter.convert("변환"));
     }
 
     @Test

@@ -2,16 +2,9 @@ package io.github.lee0701.kiturami.converter.hangul;
 
 import io.github.lee0701.kiturami.converter.Converter;
 
-public class Han2 implements Converter<String, String> {
+import static io.github.lee0701.kiturami.converter.hangul.HangulConstants.*;
 
-    public static final String CONSONANT = "ㄱㄲㄳㄴㄵㄶㄷㄸㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅃㅄㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
-    public static final String VOWEL = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ";
-    public static final String INITIAL = "ᄀᄁᄂᄃᄄᄅᄆᄇᄈᄉᄊᄋᄌᄍᄎᄏᄐᄑᄒ";
-    public static final String MEDIAL = "ᅡᅢᅣᅤᅥᅦᅧᅨᅩᅪᅫᅬᅭᅮᅯᅰᅱᅲᅳᅴᅵ";
-    public static final String FINAL = "ᆨᆩᆪᆫᆬᆭᆮᆯᆰᆱᆲᆳᆴᆵᆶᆷᆸᆹᆺᆻᆼᆽᆾᆿᇀᇁᇂ";
-    public static final String CONSONANT_TO_INITIAL = "ᄀᄁ\0ᄂ\0\0ᄃᄄᄅ\0\0\0\0\0\0\0ᄆᄇᄈ\0ᄉᄊᄋᄌᄍᄎᄏᄐᄑᄒ";
-    public static final String VOWEL_TO_MEDIAL = MEDIAL;
-    public static final String CONSONANT_TO_FINAL = "ᆨᆩᆪᆫᆬᆭᆮ\0ᆯᆰᆱᆲᆳᆴᆵᆶᆷᆸ\0ᆹᆺᆻᆼᆽ\0ᆾᆿᇀᇁᇂ";
+public class Han2 implements Converter<String, String> {
 
     @Override
     public String convert(String input) {
