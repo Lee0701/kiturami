@@ -1,6 +1,6 @@
 package io.github.lee0701.kiturami.converter.hangul;
 
-import io.github.lee0701.kiturami.Converter;
+import io.github.lee0701.kiturami.converter.Converter;
 
 public class Han2 implements Converter<String, String> {
 

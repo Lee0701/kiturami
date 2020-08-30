@@ -1,6 +1,6 @@
 package io.github.lee0701.kiturami.converter.string;
 
-import io.github.lee0701.kiturami.Converter;
+import io.github.lee0701.kiturami.converter.Converter;
 
 import java.util.Map;
 

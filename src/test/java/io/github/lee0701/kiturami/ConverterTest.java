@@ -2,6 +2,7 @@ package io.github.lee0701.kiturami;
 
 import static org.junit.Assert.*;
 
+import io.github.lee0701.kiturami.converter.Converter;
 import io.github.lee0701.kiturami.converter.string.MultiTap;
 import io.github.lee0701.kiturami.converter.string.Normalize;
 import io.github.lee0701.kiturami.converter.string.ReplaceChar;
@@ -10,9 +11,7 @@ import io.github.lee0701.kiturami.converter.hangul.Combination;
 import io.github.lee0701.kiturami.converter.hangul.Han2;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ConverterTest {
@@ -104,13 +103,11 @@ public class ConverterTest {
             put("ᅡᅵ", 'ᅢ'); put("ᅣᅵ", 'ᅤ'); put("ᅥᅵ", 'ᅦ'); put("ᅧᅵ", 'ᅨ'); put("ᅩᅡ", 'ᅪ'); put("ᅩᅢ", 'ᅫ'); put("ᅩᅵ", 'ᅬ'); put("ᅮᅦ", 'ᅰ'); put("ᅮᅵ", 'ᅱ'); put("ᅳᅵ", 'ᅴ');
             put("ᆨᆺ", 'ᆪ'); put("ᆫᇂ", 'ᆭ'); put("ᆫᆽ", 'ᆬ'); put("ᆯᆨ", 'ᆰ'); put("ᆯᆷ", 'ᆱ'); put("ᆯᆸ", 'ᆲ'); put("ᆯᆺ", 'ᆳ'); put("ᆯᇀ", 'ᆴ'); put("ᆯᇁ", 'ᆵ'); put("ᆯᇂ", 'ᆶ');
         }};
-        Converter<String, String> converter = new Sequential<>(new Sequential<>(new Sequential<>(new Sequential<>(
-                new MultiTap(layout),
-                new Combination(additions)),
-                new Han2()),
-                new Combination(combinations)),
-                new Normalize("NFC")
-        );
+        Converter<String, String> converter = new MultiTap(layout)
+                .thenSequential(new Combination(additions))
+                .thenSequential(new Han2())
+                .thenSequential(new Combination(combinations))
+                .thenSequential(new Normalize("NFC"));
         assertEquals("나랏글", converter.convert("23437104"));
         assertEquals("변환기", converter.convert("5*33*28*63219"));
         assertEquals("얘야 밥 먹었니", converter.convert("83*983* 5*35* 53318337#29"));

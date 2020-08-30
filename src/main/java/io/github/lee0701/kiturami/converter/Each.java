@@ -1,7 +1,5 @@
 package io.github.lee0701.kiturami.converter;
 
-import io.github.lee0701.kiturami.Converter;
-
 import java.util.LinkedList;
 import java.util.List;
 
