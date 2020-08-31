@@ -3,7 +3,7 @@ package io.github.lee0701.kiturami.converter;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Parallel<In, Out> implements Converter<In, List<Out>> {
+public class Parallel<In, Out> implements ListConverter<In, Out> {
     private final Converter<In, Out>[] converters;
 
     public Parallel(Converter<In, Out>... converters) {

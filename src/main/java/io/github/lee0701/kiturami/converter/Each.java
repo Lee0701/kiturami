@@ -3,7 +3,7 @@ package io.github.lee0701.kiturami.converter;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Each<In, Out> implements ListConverter<In, Out> {
+public class Each<In, Out> implements ListConverter<List<In>, Out> {
     private final Converter<In, Out> converter;
 
     public Each(Converter<In, Out> converter) {
