@@ -20,6 +20,7 @@ public class Han2 implements Converter<String, String> {
                 char fin = CONSONANT_TO_FINAL.charAt(consonant);
                 if(FINAL.indexOf(last) >= 0 || MEDIAL.indexOf(last) >= 0) {
                     if(fin != 0) result.append(fin);
+                    else if(initial != 0) result.append(initial);
                 } else if(initial != 0) result.append(initial);
             } else if(vowel >= 0) {
                 char medial = VOWEL_TO_MEDIAL.charAt(vowel);
